@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MealPlan.ViewModels"
+             xmlns:sf="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             x:Class="MealPlan.Views.MealDetailPage">
+    <ContentPage.BindingContext>
+        <vm:MealDetailPageModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid Padding="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="7*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Frame HasShadow="True" BackgroundColor="PaleGreen" Grid.ColumnSpan="3"/>
+            <Frame HasShadow="True" BackgroundColor="WhiteSmoke" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="3"/>
+            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="Large" Grid.Column="1" VerticalOptions="Center"/>
+            <Label Text="{Binding Author}" FontAttributes="Bold,Italic" Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" VerticalTextAlignment="Center"/>
+            <sf:SfCheckBox  Text="Favorite" IsChecked="{Binding Favortie}" VerticalOptions="Center" Grid.Column="2"/>
+            <Label Text="Recipe:" FontAttributes="Bold,Italic" Grid.Row="1" Grid.Column="0" 
+                   HorizontalOptions="Center"
+                   VerticalTextAlignment="Center"/>
+            <Image  Aspect="AspectFill" Source="{Binding PhotoPath}" Margin="15" Grid.Row="2" Grid.ColumnSpan="3"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

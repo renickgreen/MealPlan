@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MealPlan.ViewModels"
+             xmlns:sf="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:simage="clr-namespace:System.Drawing;assembly=System.Drawing.Primitives"
+             Title="New Meal"
+             x:Class="MealPlan.Views.NewMealPage">
+    <ContentPage.BindingContext>
+        <vm:NewMealPageModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Entry Text="{Binding Name}" Placeholder="Enter Name" Grid.ColumnSpan="2"/>
+            <sf:SfCheckBox Text="Favorite" IsChecked="{Binding IsFavorite}"  Grid.Column="2" HorizontalOptions="Center"/>
+            <Entry Text="{Binding Author}" Placeholder="Enter Author" Grid.Row="1" Grid.ColumnSpan="3"/>
+            <Label Text="Add Recipe" Grid.Row="2"/>
+            <Button Text="Save" Command="{Binding SaveCommand}" Grid.Row="3"/>
+            <Button Text="Pick Photo" IsEnabled="True" Command="{Binding PhotoCommand}" Grid.Row="3" Grid.Column="2"/>
+            <Image x:Name="resultImage" Source="{Binding PhotoPath}" HorizontalOptions="Center" Grid.Row="2" Grid.ColumnSpan="3"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

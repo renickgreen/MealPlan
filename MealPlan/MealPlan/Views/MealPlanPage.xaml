@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vs="clr-namespace:MealPlan.ViewModels"
+             xmlns:sf="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="MealPlan.Views.MealPlanPage"
+             Title="Meal Plan">
+    <ContentPage.BindingContext>
+        <vs:MealPlanPageModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BackgroundColor="LightGreen" Margin="15">
+            <Label Text="{Binding Title}"
+                   FontSize="Large"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            </Frame>
+            <ListView x:Name="listview" 
+                      SelectedItem="{Binding SelectedMeal, Mode=TwoWay}"
+                      ItemsSource="{Binding Meals}">
+                <ListView.Behaviors>
+                    <xct:EventToCommandBehavior
+                        EventName="ItemSelected"
+                        Command="{Binding SelectedCommand}"
+                        EventArgsConverter="{StaticResource ItemSelectedEventArgsConverter}"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="15,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Frame BackgroundColor="BlanchedAlmond" HasShadow="True" Grid.ColumnSpan="3"/>
+                                <Label Text="{Binding Order}"
+                                       FontSize="Medium"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"/>
+                                <Label Text="{Binding Name}" 
+                                       Grid.Column="1"
+                                       FontAttributes="Bold" 
+                                       FontSize="Medium" 
+                                       VerticalOptions="Center"/>
+                                <CheckBox IsChecked="{Binding Favortie}" Grid.Column="2" IsEnabled="False"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
