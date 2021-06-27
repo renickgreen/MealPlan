@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MealPlan.ViewModels"
              xmlns:sf="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:si="clr-namespace:Syncfusion.SfImageEditor.XForms;assembly=Syncfusion.SfImageEditor.XForms"
+             xmlns:local="clr-namespace:MealPlan.Views"
              x:Class="MealPlan.Views.MealDetailPage">
+    
     <ContentPage.BindingContext>
         <vm:MealDetailPageModel/>
     </ContentPage.BindingContext>
@@ -27,7 +30,18 @@
             <Label Text="Recipe:" FontAttributes="Bold,Italic" Grid.Row="1" Grid.Column="0" 
                    HorizontalOptions="Center"
                    VerticalTextAlignment="Center"/>
-            <Image  Aspect="AspectFill" Source="{Binding PhotoPath}" Margin="15" Grid.Row="2" Grid.ColumnSpan="3"/>
+            <local:PanContainer Grid.Row="2" Grid.ColumnSpan="2">
+            <Image Source="{Binding PhotoPath}"
+                   Scale="2"
+                   AnchorX="0"
+                   AnchorY="0"
+                   Grid.Row="2"
+                   Grid.ColumnSpan="3">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </local:PanContainer>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

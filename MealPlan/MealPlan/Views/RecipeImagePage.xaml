@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MealPlan.Views"
+             xmlns:vm="clr-namespace:MealPlan.ViewModels"
+             x:Class="MealPlan.Views.RecipeImagePage">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding GoBackCommand}"/>
+    </Shell.BackButtonBehavior>
+    <ContentPage.BindingContext>
+        <vm:RecipeImagePageModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <local:PanContainer>
+            <Image Source="{Binding PhotoPath} " Scale="2" AnchorX=".2" AnchorY="0" />
+        </local:PanContainer>
+    </ContentPage.Content>
+</ContentPage>

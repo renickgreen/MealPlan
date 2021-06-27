@@ -1,8 +1,11 @@
 ﻿using MealPlan.Models;
 using MealPlan.Services;
+using MealPlan.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -22,6 +25,12 @@ namespace MealPlan.ViewModels
                 GetMeal();
             }
         }
+        private Image _image;
+        public Image Image
+        {
+            get => _image;
+            set => SetProperty(ref _image, value);
+        }
         private string _photoPath;
         public string PhotoPath
         {
@@ -34,9 +43,15 @@ namespace MealPlan.ViewModels
             get => _theMeal;
             set => SetProperty(ref _theMeal, value);
         }
+        private ICommand _tapCommand;
+        public ICommand TapCommand
+        {
+            get => _tapCommand;
+            set => SetProperty(ref _tapCommand, value);
+        }
         public MealDetailPageModel()
         {
-           //   GetMeal();
+            TapCommand = new MvvmHelpers.Commands.AsyncCommand(Selected);
         }
 
         private async void GetMeal()
@@ -52,5 +67,11 @@ namespace MealPlan.ViewModels
             Favortie = TheMeal.Favortie;
             PhotoPath = TheMeal.RecipeImage;
         }
+        async Task Selected()
+        {
+            var route = $"{nameof(RecipeImagePage)}?{nameof(RecipeImagePageModel.PhotoPath)}={PhotoPath}";
+            await Shell.Current.GoToAsync(route);
+        }
+
     }
 }

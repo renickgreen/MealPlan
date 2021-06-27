@@ -63,6 +63,9 @@
     <PackageReference Include="Syncfusion.Xamarin.Buttons">
       <Version>19.1.0.69</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfImageEditor">
+      <Version>19.1.0.69</Version>
+    </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfListView">
       <Version>19.1.0.69</Version>
     </PackageReference>
