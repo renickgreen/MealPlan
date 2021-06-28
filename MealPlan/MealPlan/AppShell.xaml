@@ -84,6 +84,9 @@
     <FlyoutItem Title="New Meal" Icon="icon_about.png">
         <ShellContent Route="NewMealPage" ContentTemplate="{DataTemplate local:NewMealPage}" />
     </FlyoutItem>
+    <FlyoutItem Title="New Plan" Icon="icon_about.png">
+        <ShellContent Route="NewMealPlanPage" ContentTemplate="{DataTemplate local:NewMealPlanPage}" />
+    </FlyoutItem>
 
 
 </Shell>

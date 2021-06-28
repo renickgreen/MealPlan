@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MealPlan.ViewModels"
+             xmlns:sl="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:sf="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="MealPlan.Views.NewMealPlanPage">
+    <ContentPage.BindingContext>
+        <vm:NewMealPlanPageModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Entry Text="{Binding Name}" Placeholder="Enter Name" Grid.ColumnSpan="2"/>
+            <sf:SfCheckBox Text="Favorite" IsChecked="{Binding IsFavorite}"  Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="Center"/>
+            <Entry Text="{Binding Author}" Placeholder="Enter Author" Grid.Row="1" Grid.ColumnSpan="3"/>
+            <ListView ItemsSource="{Binding AllMeals}" Grid.ColumnSpan="2" Grid.Row="2" HasUnevenRows="True">
+                <ListView.Behaviors>
+                    <xct:EventToCommandBehavior
+                        EventName="ItemSelected"
+                        Command="{Binding SelectedCommand}"
+                        EventArgsConverter="{StaticResource ItemSelectedEventArgsConverter}"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="5,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Frame BackgroundColor="BlanchedAlmond" HasShadow="True" Grid.ColumnSpan="3"/>
+                                <Label Text="{Binding Name}" 
+                                       Padding="5,0,0,0"
+                                       FontAttributes="Bold" 
+                                       FontSize="Small" 
+                                       VerticalOptions="Center"/>
+                                <CheckBox IsChecked="{Binding Favortie}" HorizontalOptions="Start" Grid.Column="2" IsEnabled="False"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <sl:SfListView ItemsSource="{Binding MealPlan}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" DragStartMode="OnHold">
+                <sl:SfListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="0,0,5,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Frame BackgroundColor="BlanchedAlmond" HasShadow="True" Grid.ColumnSpan="3"/>
+                                <Label Text="{Binding Order}"
+                                       FontSize="Small"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"/>
+                                <Label Text="{Binding Name}" 
+                                       Grid.Column="1"
+                                       FontAttributes="Bold" 
+                                       FontSize="Small" 
+                                       VerticalOptions="Center"/>
+                                <CheckBox IsChecked="{Binding Favortie}" Grid.Column="2" IsEnabled="False"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </sl:SfListView.ItemTemplate>
+            </sl:SfListView>
+            <Button Text="Add to current plan" Command="{Binding SaveCommand}" Grid.Row="3" Grid.ColumnSpan="4"/>
+            <Button Text="Save" Command="{Binding SaveCommand}" Grid.Row="4" Grid.ColumnSpan="2"/>
+            <Button Text="Delete" IsEnabled="True" Command="{Binding PhotoCommand}" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="2"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
