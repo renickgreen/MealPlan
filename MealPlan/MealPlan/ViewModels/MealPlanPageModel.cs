@@ -32,7 +32,11 @@ namespace MealPlan.ViewModels
             Title = "Best Meal Plan Ever";
             Meals = new ObservableRangeCollection<Meal>();
             SelectedCommand = new AsyncCommand<object>(Selected);
-            GetMealPlan();
+            if(AppShell.CurrentPlan > 0)
+            {
+                GetMealPlan();
+            }
+            
         }
         async Task Selected(object args)
         {
@@ -53,12 +57,9 @@ namespace MealPlan.ViewModels
         async void GetMealPlan()
         {
             DatabaseControl db = await DatabaseControl.Instance;
-            List<Meal> list = await db.GetItemsAsync();
+            Meal plan = await db.GetItemAsync(AppShell.CurrentPlan);
 
-            foreach(Meal m in list)
-            {
-                Meals.Add(m);
-            }
+                Meals.Add(plan);
         }
     }
 }

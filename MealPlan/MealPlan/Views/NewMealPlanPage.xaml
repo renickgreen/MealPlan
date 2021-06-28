@@ -4,6 +4,7 @@
              xmlns:vm="clr-namespace:MealPlan.ViewModels"
              xmlns:sl="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              xmlns:sf="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:local="clr-namespace:MealPlan"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="MealPlan.Views.NewMealPlanPage">
     <ContentPage.BindingContext>
@@ -11,6 +12,7 @@
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
+        <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
@@ -57,23 +59,18 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <sl:SfListView ItemsSource="{Binding MealPlan}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" DragStartMode="OnHold">
+            <sl:SfListView ItemsSource="{Binding MealPlan}" TapCommand="{Binding RemoveCommand}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" DragStartMode="OnHold">
                 <sl:SfListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid Padding="0,0,5,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="4*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Frame BackgroundColor="BlanchedAlmond" HasShadow="True" Grid.ColumnSpan="3"/>
-                                <Label Text="{Binding Order}"
-                                       FontSize="Small"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center"/>
                                 <Label Text="{Binding Name}" 
-                                       Grid.Column="1"
+                                       Padding="5"
                                        FontAttributes="Bold" 
                                        FontSize="Small" 
                                        VerticalOptions="Center"/>
@@ -83,9 +80,9 @@
                     </DataTemplate>
                 </sl:SfListView.ItemTemplate>
             </sl:SfListView>
-            <Button Text="Add to current plan" Command="{Binding SaveCommand}" Grid.Row="3" Grid.ColumnSpan="4"/>
+            <Button Text="Add to current plan" Command="{Binding AddCommand}" Grid.Row="3" Grid.ColumnSpan="4"/>
             <Button Text="Save" Command="{Binding SaveCommand}" Grid.Row="4" Grid.ColumnSpan="2"/>
-            <Button Text="Delete" IsEnabled="True" Command="{Binding PhotoCommand}" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="2"/>
+            <Button Text="Delete" IsEnabled="True" Command="{Binding DeleteCommand}" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="2"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

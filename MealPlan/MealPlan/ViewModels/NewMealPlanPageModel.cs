@@ -12,6 +12,7 @@ using Xamarin.Essentials;
 using System.Threading.Tasks;
 using MealPlan.Views;
 using MvvmHelpers;
+using Syncfusion.ListView.XForms;
 
 namespace MealPlan.ViewModels
 {
@@ -47,6 +48,24 @@ namespace MealPlan.ViewModels
             get => _selectedCommand;
             set => SetProperty(ref _selectedCommand, value);
         }
+        private ICommand _removeCommand;
+        public ICommand RemoveCommand
+        {
+            get => _removeCommand;
+            set => SetProperty(ref _removeCommand, value);
+        }
+        private ICommand _deleteCommand;
+        public ICommand DeleteCommand
+        {
+            get => _deleteCommand;
+            set => SetProperty(ref _deleteCommand, value);
+        }
+        private ICommand _addCommand;
+        public ICommand AddCommand
+        {
+            get => _addCommand;
+            set => SetProperty(ref _addCommand, value);
+        }
         private ObservableRangeCollection<Meal> _allMeals;
         public ObservableRangeCollection<Meal> AllMeals
         {
@@ -59,21 +78,47 @@ namespace MealPlan.ViewModels
             get => _mealPlan;
             set => SetProperty(ref _mealPlan, value);
         }
+        public List<Meal> MealsPlan { get; set; }
         //***Constructor****
         public NewMealPlanPageModel()
         {
             MealPlan = new ObservableRangeCollection<Meal>();
             AllMeals = new ObservableRangeCollection<Meal>();
             IsFavorite = true;
+            AddCommand = new MvvmHelpers.Commands.Command(OnAddCommand);
+            DeleteCommand = new MvvmHelpers.Commands.Command(OnDeleteCommand);
+            RemoveCommand = new MvvmHelpers.Commands.Command(OnRemoveCommand);
             SelectedCommand = new MvvmHelpers.Commands.Command(OnSelectedCommand);
             SaveCommand = new MvvmHelpers.Commands.Command(OnSaveCommand);
             CancelCommand = new MvvmHelpers.Commands.Command(OnCancelCommand);
             GetAllMeals();
         }
 
+        private async void OnAddCommand(object obj)
+        {
+            await Shell.Current.DisplayAlert("ADD", "These Meal to Current Plan", "ok");
+        }
+
+        private async void OnDeleteCommand(object obj)
+        {
+            await Shell.Current.DisplayAlert("HELP", "Delete This Plan", "OK");
+        }
+
+        private void OnRemoveCommand(object obj)
+        {
+
+            Meal meal = new Meal();
+            meal = (obj as Syncfusion.ListView.XForms.ItemTappedEventArgs).ItemData as Meal;
+            MealPlan.Remove(meal);
+
+        }
+
         private void OnSelectedCommand(object obj)
         {
-            MealPlan.Add(obj as Meal);
+            Meal meal = obj as Meal;
+            meal.Order = MealPlan.Count + 1;
+            MealPlan.Add(meal);
+            
         }
 
         private void OnCancelCommand(object obj)
@@ -83,30 +128,39 @@ namespace MealPlan.ViewModels
 
         private async void OnSaveCommand(object obj)
         {
-            await Shell.Current.DisplayAlert("Save", "Save Command Hit", "OK");
-            /*
+            
+           /* 
             if (!Validate())
             {
-                var rout = $"{nameof(MealPlanPage)}";
-                await Shell.Current.GoToAsync(rout);
+                await Shell.Current.DisplayAlert("Missing Info", 
+                    "Make sure the Name, Author are filled out and you added items to your Meal Plan list.", "OK");
                 return;
             }
-            Meal item = new Meal { Name = Name, Author = Author, Favortie = IsFavorite };
+            foreach(Meal m in MealPlan)
+            {
+                m.Order = MealsPlan.Count;
+                MealsPlan.Add(m);
+            }
+            MealPlanModel item = new MealPlanModel { Name = Name, Author = Author, Favortie = IsFavorite, Meals = MealsPlan };
             DatabaseControl db = await DatabaseControl.Instance;
-            await db.SaveItemAsync(item);
+            var planId = await db.SavePlanAsync(item);
+            if(AppShell.CurrentPlan == 0)
+            {
+                AppShell.CurrentPlan = planId;
+            }
             ResetForm();
-            var route = $"{nameof(MealPlanPage)}";
-            await Shell.Current.GoToAsync(route);  */
-        }
+            await Shell.Current.GoToAsync("..");  */
+        } 
         void ResetForm()
         {
             Name = "";
             Author = "";
             IsFavorite = false;
+            MealPlan.Clear();
         }
         bool Validate()
         {
-            if (string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Author) || MealPlan.Count == 0)
             {
                 return false;
             }
