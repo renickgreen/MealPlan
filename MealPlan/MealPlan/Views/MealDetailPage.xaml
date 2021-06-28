@@ -16,6 +16,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="7*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -30,18 +31,15 @@
             <Label Text="Recipe:" FontAttributes="Bold,Italic" Grid.Row="1" Grid.Column="0" 
                    HorizontalOptions="Center"
                    VerticalTextAlignment="Center"/>
-            <local:PanContainer Grid.Row="2" Grid.ColumnSpan="2">
             <Image Source="{Binding PhotoPath}"
-                   Scale="2"
-                   AnchorX="0"
-                   AnchorY="0"
                    Grid.Row="2"
                    Grid.ColumnSpan="3">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TapCommand}"/>
                     </Image.GestureRecognizers>
                 </Image>
-            </local:PanContainer>
+            <Button Text="Edit" Command="{Binding EditCommand}" Grid.Row="3"/>
+            <Button Text="Delete" Command="{Binding DeleteCommand}" Grid.Row="3" Grid.Column="2"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

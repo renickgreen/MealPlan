@@ -49,9 +49,23 @@ namespace MealPlan.ViewModels
             get => _tapCommand;
             set => SetProperty(ref _tapCommand, value);
         }
+        private ICommand _editCommand;
+        public ICommand EditCommand
+        {
+            get => _editCommand;
+            set => SetProperty(ref _editCommand, value);
+        }
+        private ICommand _deleteCommand;
+        public ICommand DeleteCommand
+        {
+            get => _deleteCommand;
+            set => SetProperty(ref _deleteCommand, value);
+        }
         public MealDetailPageModel()
         {
             TapCommand = new MvvmHelpers.Commands.AsyncCommand(Selected);
+            EditCommand = new MvvmHelpers.Commands.AsyncCommand(OnEditCommand);
+            DeleteCommand = new MvvmHelpers.Commands.AsyncCommand(OnDeleteCommand);
         }
 
         private async void GetMeal()
@@ -72,6 +86,13 @@ namespace MealPlan.ViewModels
             var route = $"{nameof(RecipeImagePage)}?{nameof(RecipeImagePageModel.PhotoPath)}={PhotoPath}";
             await Shell.Current.GoToAsync(route);
         }
-
+        async Task OnEditCommand()
+        {
+            await Shell.Current.DisplayAlert(Title, "Go to Edit", "TODO");
+        }
+        async Task OnDeleteCommand()
+        {
+            await Shell.Current.DisplayAlert(Title, "Go to Delete", "TODO");
+        }
     }
 }
