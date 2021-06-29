@@ -10,5 +10,10 @@ namespace MealPlan.Models
     {
         [NotNull]
         public string Meals { get; set; }
+
+        internal void ExtractMealsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

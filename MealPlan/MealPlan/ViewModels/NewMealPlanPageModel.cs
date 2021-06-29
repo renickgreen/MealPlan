@@ -150,7 +150,7 @@ namespace MealPlan.ViewModels
             var planId = await db.SavePlanAsync(item);
             if(AppShell.CurrentPlan == 0)
             {
-                AppShell.CurrentPlan = planId;
+                Preferences.Set("current_plan_key", AppShell.CurrentPlan = planId);
             }
             ResetForm();
             await Shell.Current.GoToAsync(".."); /* */

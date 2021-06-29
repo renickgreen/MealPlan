@@ -16,6 +16,7 @@ namespace MealPlan
             Routing.RegisterRoute(nameof(MealPlanPage), typeof(MealPlanPage));
             Routing.RegisterRoute(nameof(MealDetailPage), typeof(MealDetailPage));
             Routing.RegisterRoute(nameof(RecipeImagePage), typeof(RecipeImagePage));
+            Routing.RegisterRoute(nameof(MealPlanDetailPage), typeof(MealPlanDetailPage));
         }
 
     }

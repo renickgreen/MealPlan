@@ -48,6 +48,10 @@ namespace MealPlan.Services
         {
             return Database.Table<Meal>().Where(i => i.Id == id).FirstOrDefaultAsync();
         }
+        public Task<MealPlanModel> GetPlanAsync(int id)
+        {
+            return Database.Table<MealPlanModel>().Where(i => i.Id == id).FirstOrDefaultAsync();
+        }
 
         public Task<int> SaveItemAsync(Meal item)
         {

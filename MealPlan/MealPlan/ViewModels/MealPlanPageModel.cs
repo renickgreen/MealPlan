@@ -9,6 +9,7 @@ using MvvmHelpers.Commands;
 using MealPlan.Views;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace MealPlan.ViewModels
 {
@@ -32,11 +33,7 @@ namespace MealPlan.ViewModels
             Title = "Best Meal Plan Ever";
             Meals = new ObservableRangeCollection<Meal>();
             SelectedCommand = new AsyncCommand<object>(Selected);
-            if(AppShell.CurrentPlan > 0)
-            {
                 GetMealPlan();
-            }
-            
         }
         async Task Selected(object args)
         {
@@ -56,10 +53,37 @@ namespace MealPlan.ViewModels
         }
         async void GetMealPlan()
         {
+            AppShell.CurrentPlan = Preferences.Get("current_plan_key", 0);
+            if (AppShell.CurrentPlan > 0)
+            {
+                DatabaseControl db = await DatabaseControl.IPlan;
+                MealPlanModel plan = await db.GetPlanAsync(AppShell.CurrentPlan);
+                ExtractMealsAsync(plan.Meals);
+                Title = plan.Name;
+            }
+        }
+        void ExtractMealsAsync(string meals)
+        {
+            var commaIndex = 0;
+            var numIndex = 0;
+            List<int> Ids = new List<int>();
+            while(commaIndex < meals.Length-1)
+            {
+                commaIndex = meals.IndexOf(',');
+                var num = int.Parse(meals.Substring(numIndex, commaIndex));
+                Ids.Add(num);
+                meals = meals.Substring(commaIndex + 1);
+            }
+            GetMeals(Ids);
+        }
+        async void GetMeals(List<int> list)
+        {
             DatabaseControl db = await DatabaseControl.Instance;
-            Meal plan = await db.GetItemAsync(AppShell.CurrentPlan);
-
-                Meals.Add(plan);
+            foreach(int item in list)
+            {
+                Meal meal = await db.GetItemAsync(item);
+                Meals.Add(meal);
+            }
         }
     }
 }
