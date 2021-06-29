@@ -30,6 +30,7 @@ namespace MealPlan.ViewModels
             get => _isEnable;
             set => SetProperty(ref _isEnable, value);
         }
+        #region Commands
         private ICommand _saveCommand;
         public ICommand SaveCommand
         {
@@ -66,6 +67,7 @@ namespace MealPlan.ViewModels
             get => _addCommand;
             set => SetProperty(ref _addCommand, value);
         }
+        #endregion
         private ObservableRangeCollection<Meal> _allMeals;
         public ObservableRangeCollection<Meal> AllMeals
         {
@@ -78,10 +80,11 @@ namespace MealPlan.ViewModels
             get => _mealPlan;
             set => SetProperty(ref _mealPlan, value);
         }
-        public List<Meal> MealsPlan { get; set; }
+        public string MealsPlan { get; set; }
         //***Constructor****
         public NewMealPlanPageModel()
         {
+            MealsPlan = "";
             MealPlan = new ObservableRangeCollection<Meal>();
             AllMeals = new ObservableRangeCollection<Meal>();
             IsFavorite = true;
@@ -129,27 +132,28 @@ namespace MealPlan.ViewModels
         private async void OnSaveCommand(object obj)
         {
             
-           /* 
+            
             if (!Validate())
             {
                 await Shell.Current.DisplayAlert("Missing Info", 
                     "Make sure the Name, Author are filled out and you added items to your Meal Plan list.", "OK");
                 return;
             }
+            var count = 0;
             foreach(Meal m in MealPlan)
             {
-                m.Order = MealsPlan.Count;
-                MealsPlan.Add(m);
+                m.Order = count++;
+                MealsPlan += $"{m.Id},";
             }
             MealPlanModel item = new MealPlanModel { Name = Name, Author = Author, Favortie = IsFavorite, Meals = MealsPlan };
-            DatabaseControl db = await DatabaseControl.Instance;
+            DatabaseControl db = await DatabaseControl.IPlan;
             var planId = await db.SavePlanAsync(item);
             if(AppShell.CurrentPlan == 0)
             {
                 AppShell.CurrentPlan = planId;
             }
             ResetForm();
-            await Shell.Current.GoToAsync("..");  */
+            await Shell.Current.GoToAsync(".."); /* */
         } 
         void ResetForm()
         {

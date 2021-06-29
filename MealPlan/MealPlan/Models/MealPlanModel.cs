@@ -9,6 +9,6 @@ namespace MealPlan.Models
     public class MealPlanModel : Meal
     {
         [NotNull]
-        public List<Meal> Meals { get; set; }
+        public string Meals { get; set; }
     }
 }
