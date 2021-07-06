@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.mealplan">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30" />
-    <application android:label="MealPlan.Android" android:theme="@style/MainTheme"></application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.READ_EXTERNARL_STORAGE"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNARL_STORAGE"/>
-  <uses-permission android:name="android.permission.CAMERA"/>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.mealplan" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30" />
+	<application android:label="MealPlan.Android" android:theme="@style/MainTheme" android:icon="@mipmap/icon"></application>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.READ_EXTERNARL_STORAGE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNARL_STORAGE" />
+	<uses-permission android:name="android.permission.CAMERA" />
 </manifest>
