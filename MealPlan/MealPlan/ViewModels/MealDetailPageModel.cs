@@ -90,6 +90,7 @@ namespace MealPlan.ViewModels
         {
             ///TODO: Edit Button for Meal
             await Shell.Current.DisplayAlert(Title, "Go to Edit", "TODO");
+            await Shell.Current.GoToAsync($"{nameof(NewMealPage)}?{nameof(NewMealPageModel.MealId)}={int.Parse(MealId)}");
         }
         async Task OnDeleteCommand()
         {

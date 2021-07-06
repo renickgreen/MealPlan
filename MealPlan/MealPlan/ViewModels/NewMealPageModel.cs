@@ -14,8 +14,19 @@ using MealPlan.Views;
 
 namespace MealPlan.ViewModels
 {
+    [QueryProperty(nameof(MealId), nameof(MealId))]
     class NewMealPageModel : ViewModelBase
     {
+        private int _mealId;
+        public int MealId
+        {
+            get => _mealId;
+            set
+            {
+                SetProperty(ref _mealId, value);
+                LoadMeal();
+            }
+        }
         private bool _isFavorite;
         public bool IsFavorite
         {
@@ -57,11 +68,21 @@ namespace MealPlan.ViewModels
         //***Constructor****
         public NewMealPageModel()
         {
-            
             IsFavorite = true;
             SaveCommand = new MvvmHelpers.Commands.Command(OnSaveCommand);
             CancelCommand = new MvvmHelpers.Commands.Command(OnCancelCommand);
             PhotoCommand = new MvvmHelpers.Commands.Command(OnPhotoCommand);
+        }
+
+        private async void LoadMeal()
+        {
+            DatabaseControl db = await DatabaseControl.Instance;
+            var meal = await db.GetItemAsync(MealId);
+            Name = meal.Name;
+            Author = meal.Author;
+            Description = meal.Description;
+            Favortie = meal.Favortie;
+            PhotoPath = meal.RecipeImage;
         }
 
         private void OnPhotoCommand(object obj)
