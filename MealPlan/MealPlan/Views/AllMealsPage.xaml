@@ -4,10 +4,10 @@
              xmlns:vs="clr-namespace:MealPlan.ViewModels"
              xmlns:sf="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             x:Class="MealPlan.Views.MealPlanPage"
-             Title="Meal Plan">
+             x:Class="MealPlan.Views.AllMealsPage"
+             Title="All Meals">
     <ContentPage.BindingContext>
-        <vs:MealPlanPageModel/>
+        <vs:AllMealsPageModel/>
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
@@ -17,18 +17,12 @@
         <ToolbarItem Text="New Meal" Command="{Binding NewMealCommand}" Priority="0" Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Behaviors>
-       <xct:EventToCommandBehavior
+        <xct:EventToCommandBehavior
             EventName="Appearing"
             Command="{Binding AppearingCommand}"/>
     </ContentPage.Behaviors>
     <ContentPage.Content>
         <StackLayout>
-            <Frame BackgroundColor="LightGreen" Margin="15">
-            <Label Text="{Binding Title}"
-                   FontSize="Large"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            </Frame>
             <ListView x:Name="listview" 
                       SelectedItem="{Binding SelectedMeal, Mode=TwoWay}"
                       ItemsSource="{Binding Meals}">

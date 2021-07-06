@@ -16,6 +16,7 @@ using Syncfusion.ListView.XForms;
 
 namespace MealPlan.ViewModels
 {
+    [QueryProperty(nameof(PlanId), nameof(PlanId))]
     public class NewMealPlanPageModel : ViewModelBase
     {
         private bool _isFavorite;
@@ -29,6 +30,16 @@ namespace MealPlan.ViewModels
         {
             get => _isEnable;
             set => SetProperty(ref _isEnable, value);
+        }
+        private int _planId;
+        public int PlanId
+        {
+            get => _planId;
+            set
+            {
+                SetProperty(ref _planId, value);
+                LoadPlanAsync();
+            }
         }
         #region Commands
         private ICommand _saveCommand;
@@ -140,12 +151,15 @@ namespace MealPlan.ViewModels
                 return;
             }
             var count = 0;
+            MealsPlan = "";
             foreach(Meal m in MealPlan)
             {
                 m.Order = count++;
                 MealsPlan += $"{m.Id},";
             }
-            MealPlanModel item = new MealPlanModel { Name = Name, Author = Author, Favortie = IsFavorite, Meals = MealsPlan };
+
+            MealPlanModel item = new MealPlanModel {Name = Name, Author = Author, Favortie = IsFavorite, Meals = MealsPlan };
+            if (PlanId > 0) item.Id = PlanId; 
             DatabaseControl db = await DatabaseControl.IPlan;
             var planId = await db.SavePlanAsync(item);
             if(AppShell.CurrentPlan == 0)
@@ -177,7 +191,48 @@ namespace MealPlan.ViewModels
 
             foreach (Meal m in list)
             {
-                AllMeals.Add(m);
+                if(m != null)
+                {
+                    AllMeals.Add(m);
+                }
+                
+            }
+        }
+        async void LoadPlanAsync()
+        {
+            DatabaseControl db = await DatabaseControl.IPlan;
+            MealPlanModel plan = await db.GetPlanAsync(PlanId);
+            Name = plan.Name;
+            Author = plan.Author;
+            Description = plan.Description;
+            Favortie = plan.Favortie;
+            ExtractMealsAsync(plan.Meals);
+        }
+        void ExtractMealsAsync(string meals)
+        {
+            var commaIndex = 0;
+            var numIndex = 0;
+            List<int> Ids = new List<int>();
+            while (commaIndex < meals.Length - 1)
+            {
+                commaIndex = meals.IndexOf(',');
+                var num = int.Parse(meals.Substring(numIndex, commaIndex));
+                Ids.Add(num);
+                meals = meals.Substring(commaIndex + 1);
+            }
+            GetMeals(Ids);
+        }
+        async void GetMeals(List<int> list)
+        {
+            DatabaseControl db = await DatabaseControl.Instance;
+            foreach (int item in list)
+            {
+                Meal meal = await db.GetItemAsync(item);
+                if(meal != null)
+                {
+                    MealPlan.Add(meal);
+                }
+                
             }
         }
     }

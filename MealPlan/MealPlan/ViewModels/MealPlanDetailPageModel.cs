@@ -72,11 +72,12 @@ namespace MealPlan.ViewModels
            // GetMealPlan();
         }
 
-        private void OnAddCommand(object obj)
+        private async void OnAddCommand(object obj)
         {
             AppShell.CurrentPlan = ThePlan.Id;
             Preferences.Set("current_plan_key", ThePlan.Id);
-            Shell.Current.DisplayAlert(ThePlan.Name, "Set as Meal Plan.  Great choice!", "Let's Eat");
+            await Shell.Current.DisplayAlert(ThePlan.Name, "Set as Meal Plan.  Great choice!", "Let's Eat");
+            await Shell.Current.GoToAsync("..");
         }
 
         private async void GetMealPlan()
@@ -100,11 +101,17 @@ namespace MealPlan.ViewModels
         }
         async Task OnEditCommand()
         {
-            await Shell.Current.DisplayAlert(Title, "Go to Edit", "TODO");
+            //await Shell.Current.DisplayAlert(Title, ThePlan.Id.ToString(), "TODO");
+            await Shell.Current.GoToAsync($"{nameof(NewMealPlanPage)}?{nameof(NewMealPlanPageModel.PlanId)}={ThePlan.Id}");
         }
         async Task OnDeleteCommand()
         {
-            await Shell.Current.DisplayAlert(Title, "Go to Delete", "TODO");
+            if(await Shell.Current.DisplayAlert("Warning", $"Do you want to PERMANENTLY DELETE {Name}?", "Yes Delete", "No"))
+            {
+                DatabaseControl db = await DatabaseControl.IPlan;
+                await db.DeleteItemAsync(ThePlan);
+                await Shell.Current.GoToAsync("..");
+            }
         }
         void ExtractMealsAsync(string meals)
         {
@@ -120,13 +127,16 @@ namespace MealPlan.ViewModels
             }
             GetMeals(Ids);
         }
-        async void GetMeals(List<int> list)
+        async void GetMeals(List<int> list) 
         {
             DatabaseControl db = await DatabaseControl.Instance;
             foreach (int item in list)
             {
                 Meal meal = await db.GetItemAsync(item);
-                Meals.Add(meal);
+                if (meal != null)
+                {
+                    Meals.Add(meal);
+                }
             }
         }
     }

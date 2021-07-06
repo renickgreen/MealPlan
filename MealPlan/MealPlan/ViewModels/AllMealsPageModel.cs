@@ -1,19 +1,19 @@
 ﻿using MealPlan.Models;
-using MvvmHelpers;
 using MealPlan.Services;
+using MealPlan.Views;
+using MvvmHelpers;
+using MvvmHelpers.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
-using System.Windows.Input;
-using MvvmHelpers.Commands;
-using MealPlan.Views;
-using Xamarin.Forms;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MealPlan.ViewModels
 {
-    public class MealPlanPageModel : ViewModelBase
+    class AllMealsPageModel : ViewModelBase
     {
         private ICommand _appearingCommand;
         public ICommand AppearingCommand
@@ -46,15 +46,28 @@ namespace MealPlan.ViewModels
             set => SetProperty(ref _selectedMeal, value);
         }
         public AsyncCommand<object> SelectedCommand { get; }
-        public MealPlanPageModel()
+
+        public AllMealsPageModel()
         {
-            Title = "Best Meal Plan Ever";
             Meals = new ObservableRangeCollection<Meal>();
             SelectedCommand = new AsyncCommand<object>(Selected);
             AppearingCommand = new MvvmHelpers.Commands.Command(OnAppearingCommand);
             NewPlanCommand = new MvvmHelpers.Commands.Command(OnNewPlanCommand);
             NewMealCommand = new MvvmHelpers.Commands.Command(OnNewMealCommand);
-           // GetMealPlan();
+            // GetMealPlan();
+        }
+
+        async Task Selected(object args)
+        {
+            DatabaseControl db = await DatabaseControl.Instance;
+            var meal = args as Meal;
+            if (meal == null)
+                return;
+            SelectedMeal = null;
+            // await DeleteCommand(db);
+            // return;
+            var route = $"{nameof(MealDetailPage)}?{nameof(MealDetailPageModel.MealId)}={meal.Id}";
+            await Shell.Current.GoToAsync(route);
         }
 
         private void OnNewMealCommand(object obj)
@@ -69,60 +82,18 @@ namespace MealPlan.ViewModels
 
         private void OnAppearingCommand(object obj)
         {
-            GetMealPlan();
+            GetMeals();
         }
-
-        async Task Selected(object args)
-        {
-            DatabaseControl db = await DatabaseControl.Instance;
-            var meal = args as Meal;
-            if (meal == null)
-                return;
-            SelectedMeal = null;
-           // await DeleteCommand(db);
-           // return;
-            var route = $"{nameof(MealDetailPage)}?{nameof(MealDetailPageModel.MealId)}={meal.Id}";
-            await Shell.Current.GoToAsync(route);
-        }
-        async Task DeleteCommand(DatabaseControl db)
-        {
-            await db.DeleteAllAsync();
-        }
-        async void GetMealPlan()
-        {
-            AppShell.CurrentPlan = Preferences.Get("current_plan_key", 0);
-            if (AppShell.CurrentPlan > 0)
-            {
-                DatabaseControl db = await DatabaseControl.IPlan;
-                MealPlanModel plan = await db.GetPlanAsync(AppShell.CurrentPlan);
-                ExtractMealsAsync(plan.Meals);
-                Title = plan.Name;
-            }
-        }
-        void ExtractMealsAsync(string meals)
-        {
-            var commaIndex = 0;
-            var numIndex = 0;
-            List<int> Ids = new List<int>();
-            while(commaIndex < meals.Length-1)
-            {
-                commaIndex = meals.IndexOf(',');
-                var num = int.Parse(meals.Substring(numIndex, commaIndex));
-                Ids.Add(num);
-                meals = meals.Substring(commaIndex + 1);
-            }
-            GetMeals(Ids);
-        }
-        async void GetMeals(List<int> list)
+        async void GetMeals()
         {
             Meals.Clear();
             DatabaseControl db = await DatabaseControl.Instance;
-            foreach(int item in list)
+            List<Meal> meal = await db.GetItemsAsync();
+            foreach (Meal m in meal)
             {
-                Meal meal = await db.GetItemAsync(item);
-                if(meal != null)
+                if (meal != null)
                 {
-                    Meals.Add(meal);
+                    Meals.Add(m);
                 }
             }
         }

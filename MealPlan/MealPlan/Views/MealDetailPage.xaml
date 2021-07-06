@@ -5,6 +5,7 @@
              xmlns:sf="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
              xmlns:si="clr-namespace:Syncfusion.SfImageEditor.XForms;assembly=Syncfusion.SfImageEditor.XForms"
              xmlns:local="clr-namespace:MealPlan.Views"
+             Shell.PresentationMode="Modal"
              x:Class="MealPlan.Views.MealDetailPage">
     
     <ContentPage.BindingContext>

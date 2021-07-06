@@ -88,11 +88,17 @@ namespace MealPlan.ViewModels
         }
         async Task OnEditCommand()
         {
+            ///TODO: Edit Button for Meal
             await Shell.Current.DisplayAlert(Title, "Go to Edit", "TODO");
         }
         async Task OnDeleteCommand()
         {
-            await Shell.Current.DisplayAlert(Title, "Go to Delete", "TODO");
+            if (await Shell.Current.DisplayAlert("Warning", $"Do you want to PERMANENTLY DELETE {Name}?", "Yes Delete", "No"))
+            {
+                DatabaseControl db = await DatabaseControl.Instance;
+                await db.DeleteItemAsync(TheMeal);
+                await Shell.Current.GoToAsync("..");
+            }
         }
     }
 }

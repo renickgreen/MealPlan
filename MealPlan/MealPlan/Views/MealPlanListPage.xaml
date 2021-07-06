@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:vs="clr-namespace:MealPlan.ViewModels"
+             Title="Choose a Meal Plan"
              x:Class="MealPlan.Views.MealPlanListPage">
     <ContentPage.BindingContext>
         <vs:MealPlanListPageModel/>
@@ -10,15 +11,25 @@
     <ContentPage.Resources>
         <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New Plan" Command="{Binding NewPlanCommand}" Priority="0" Order="Secondary"/>
+        <ToolbarItem Text="New Meal" Command="{Binding NewMealCommand}" Priority="0" Order="Secondary"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"/>
+    </ContentPage.Behaviors>
     <ContentPage.Content>
         <StackLayout>
-            <Frame BackgroundColor="LightGreen" Margin="15">
+          <!--  <Frame BackgroundColor="LightGreen" Margin="15">
                 <Label Text="{Binding Title}"
                    FontSize="Large"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            </Frame>
+            </Frame> -->
             <ListView x:Name="listview" 
+                      Margin="0,35"
                       SelectedItem="{Binding SelectedPlan, Mode=TwoWay}"
                       ItemsSource="{Binding MealPlans}">
                 <ListView.Behaviors>

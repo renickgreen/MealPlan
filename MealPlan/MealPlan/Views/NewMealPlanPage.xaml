@@ -15,7 +15,7 @@
         <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid>
+        <Grid Padding="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>

@@ -79,17 +79,13 @@
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
     <FlyoutItem Title="Meal Plan" Icon="icon_about.png">
-        <ShellContent Route="MealPlanPage" ContentTemplate="{DataTemplate local:MealPlanPage}" />
+        <Tab Title="Plans" Icon="icon_about.png">
+            <ShellContent Title="My Plan" Route="MealPlanPage" ContentTemplate="{DataTemplate local:MealPlanPage}" />
+            <ShellContent Title="All Plans" Route="MealPlanListPage" ContentTemplate="{DataTemplate local:MealPlanListPage}" />
+            <ShellContent Title="All Meals" Route="AllMealsPage" ContentTemplate="{DataTemplate local:AllMealsPage}" />
+        </Tab>
     </FlyoutItem>
-    <FlyoutItem Title="New Meal" Icon="icon_about.png">
-        <ShellContent Route="NewMealPage" ContentTemplate="{DataTemplate local:NewMealPage}" />
-    </FlyoutItem>
-    <FlyoutItem Title="New Plan" Icon="icon_about.png">
-        <ShellContent Route="NewMealPlanPage" ContentTemplate="{DataTemplate local:NewMealPlanPage}" />
-    </FlyoutItem>
-    <FlyoutItem Title="Select Plan" Icon="icon_about.png">
-        <ShellContent Route="MealPlanListPage" ContentTemplate="{DataTemplate local:MealPlanListPage}" />
-    </FlyoutItem>
+   
 
 
 </Shell>

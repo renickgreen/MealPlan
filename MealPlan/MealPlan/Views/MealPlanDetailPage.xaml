@@ -5,6 +5,7 @@
              xmlns:sf="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:vm="clr-namespace:MealPlan.ViewModels"
+             Shell.PresentationMode="Modal"
              x:Class="MealPlan.Views.MealPlanDetailPage">
     <ContentPage.BindingContext>
         <vm:MealPlanDetailPageModel/>
@@ -53,7 +54,7 @@
                     </DataTemplate>
                 </sl:SfListView.ItemTemplate>
             </sl:SfListView>
-            <Button Text="Add to current plan" Command="{Binding AddCommand}" Grid.Row="3" Grid.ColumnSpan="4"/>
+            <Button Text="Set as Meal Plan" Command="{Binding AddCommand}" Grid.Row="3" Grid.ColumnSpan="4"/>
             <Button Text="Edit" Command="{Binding EditCommand}" Grid.Row="4" Grid.ColumnSpan="2"/>
             <Button Text="Delete" IsEnabled="True" Command="{Binding DeleteCommand}" Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="2"/>
         </Grid>

@@ -15,6 +15,24 @@ namespace MealPlan.ViewModels
 {
     public class MealPlanListPageModel : ViewModelBase
     {
+        private ICommand _appearingCommand;
+        public ICommand AppearingCommand
+        {
+            get => _appearingCommand;
+            set => SetProperty(ref _appearingCommand, value);
+        }
+        private ICommand _newPlanCommand;
+        public ICommand NewPlanCommand
+        {
+            get => _newPlanCommand;
+            set => SetProperty(ref _newPlanCommand, value);
+        }
+        private ICommand _newMealCommand;
+        public ICommand NewMealCommand
+        {
+            get => _newMealCommand;
+            set => SetProperty(ref _newMealCommand, value);
+        }
         private ObservableRangeCollection<MealPlanModel> _mealPlans;
         public ObservableRangeCollection<MealPlanModel> MealPlans
         {
@@ -33,6 +51,21 @@ namespace MealPlan.ViewModels
             Title = "Best Meal Plan Ever";
             MealPlans = new ObservableRangeCollection<MealPlanModel>();
             SelectedCommand = new AsyncCommand<object>(Selected);
+            AppearingCommand = new MvvmHelpers.Commands.Command(OnAppearingCommand);
+            NewPlanCommand = new MvvmHelpers.Commands.Command(OnNewPlanCommand);
+            NewMealCommand = new MvvmHelpers.Commands.Command(OnNewMealCommand);
+            //  GetMealPlans();
+        }
+        private void OnNewMealCommand(object obj)
+        {
+            Shell.Current.GoToAsync($"{nameof(NewMealPage)}");
+        }
+        private void OnNewPlanCommand(object obj)
+        {
+            Shell.Current.GoToAsync($"{nameof(NewMealPlanPage)}");
+        }
+        private void OnAppearingCommand(object obj)
+        {
             GetMealPlans();
         }
         async Task Selected(object args)
@@ -54,11 +87,16 @@ namespace MealPlan.ViewModels
         }
         async void GetMealPlans()
         {
+            MealPlans.Clear();
                 DatabaseControl db = await DatabaseControl.IPlan;
                 List<MealPlanModel> plan = await db.GetPlansAsync();
                 foreach(MealPlanModel p in plan)
             {
-                MealPlans.Add(p);
+                if (p != null)
+                {
+                    MealPlans.Add(p);
+                }
+                
             }
         }
     }

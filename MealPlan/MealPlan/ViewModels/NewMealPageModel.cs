@@ -86,8 +86,8 @@ namespace MealPlan.ViewModels
             DatabaseControl db = await DatabaseControl.Instance;
             await db.SaveItemAsync(item);
             ResetForm();
-            var route = $"{nameof(MealPlanPage)}";
-            await Shell.Current.GoToAsync(route);
+           // var route = $"{nameof(MealPlanPage)}";
+            await Shell.Current.GoToAsync("..");
         }
         void ResetForm()
         {
